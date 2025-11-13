@@ -13,7 +13,7 @@ module.exports = {
     },
     env_production: {
       NODE_ENV: 'production',
-      PORT: 5000,
+      PORT: 85,
       NODE_OPTIONS: '--max-old-space-size=2048', // Increase memory limit
       UV_THREADPOOL_SIZE: 128 // Increase thread pool for better I/O performance
     },
