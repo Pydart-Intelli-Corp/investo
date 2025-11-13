@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "btc_remote",
+    "password": "Asd@btc123456",
+    "database": "investogold_db",
+    "host": "72.61.144.187",
+    "port": 3306,
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "btc_remote",
+    "password": "Asd@btc123456",
+    "database": "investogold_db",
+    "host": "72.61.144.187",
+    "port": 3306,
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "btc_remote",
+    "password": "Asd@btc123456",
+    "database": "investogold_db",
+    "host": "72.61.144.187",
+    "port": 3306,
+    "dialect": "mysql"
+  }
+}

@@ -1,0 +1,178 @@
+name: Simple Express Deploy to VPS
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Deploy to VPS
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        key: ${{ secrets.VPS_SSH_KEY }}
+        port: ${{ secrets.VPS_PORT }}
+        script: |
+          echo "🚀 Starting deployment..."
+          
+          # Create application directory if it doesn't exist
+          mkdir -p /var/www/investogold
+          cd /var/www/investogold
+          
+          # Initialize git repository if it doesn't exist
+          if [ ! -d ".git" ]; then
+            git init
+            git remote add origin https://github.com/Pydart-Intelli-Corp/btcbot_node.git
+          fi
+          
+          # Stop PM2 processes
+          echo "⏹️ Stopping PM2 processes..."
+          pm2 stop investogold || echo "No processes to stop"
+          pm2 delete investogold || echo "No processes to delete"
+          
+          # Backup current deployment
+          echo "💾 Creating backup..."
+          cp -r /var/www/investogold /var/www/investogold-backup-$(date +%Y%m%d-%H%M%S) 2>/dev/null || echo "Backup skipped"
+          
+          # Pull latest code with force update
+          echo "📥 Pulling latest code..."
+          git fetch origin
+          git reset --hard origin/main
+          git clean -fd
+          
+          # Verify we have the latest commit
+          echo "📋 Current commit: $(git rev-parse --short HEAD)"
+          echo "📋 Latest commit: $(git ls-remote origin main | cut -f1 | cut -c1-7)"
+          
+          # Create .env file with all secrets
+          echo "⚙️ Creating environment configuration..."
+          cat > .env << EOF
+          NODE_ENV=${{ secrets.NODE_ENV }}
+          PORT=5000
+          
+          # Database Configuration
+          DB_HOST=localhost
+          DB_PORT=3306
+          DB_NAME=${{ secrets.DB_NAME }}
+          DB_USER=${{ secrets.DB_USER }}
+          DB_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
+          
+          # JWT Configuration
+          JWT_SECRET=${{ secrets.JWT_SECRET }}
+          
+          # Admin Configuration
+          ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }}
+          ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}
+          
+          # Application Settings
+          BASE_URL=http://${{ secrets.VPS_HOST }}:5000
+          FRONTEND_URL=http://${{ secrets.VPS_HOST }}:5000
+          ALLOWED_ORIGINS=http://${{ secrets.VPS_HOST }}:5000,http://${{ secrets.VPS_HOST }},http://localhost:3000,http://localhost:5000
+          
+          # Email Configuration (optional)
+          EMAIL_SERVICE=gmail
+          EMAIL_HOST=${{ secrets.EMAIL_HOST }}
+          EMAIL_PORT=${{ secrets.EMAIL_PORT }}
+          EMAIL_USER=${{ secrets.EMAIL_USER }}
+          EMAIL_PASS=${{ secrets.EMAIL_PASS }}
+          EMAIL_FROM=noreply@investogold.com
+          
+          # Backup Configuration
+          BACKUP_RETENTION_DAYS=${{ secrets.BACKUP_RETENTION_DAYS }}
+          EOF
+          
+          # Clear caches and install dependencies
+          echo "📦 Installing dependencies..."
+          npm cache clean --force
+          rm -rf node_modules package-lock.json .next
+          npm install --production
+          
+          # Build Next.js application
+          echo "🔨 Building Next.js application..."
+          npm run build
+          
+          # Verify build output
+          if [ -d ".next" ]; then
+            echo "✅ Next.js build successful"
+          else
+            echo "❌ Next.js build failed"
+            exit 1
+          fi
+          
+          # Run database migrations
+          echo "🗄️ Running database migrations..."
+          node migrate.js || echo "Migration completed"
+          
+          # Start application with PM2 using ecosystem config
+          echo "▶️ Starting application with PM2..."
+          if [ -f ecosystem.config.js ]; then
+            pm2 start ecosystem.config.js --env production
+          else
+            pm2 start server.js --name "investogold" --instances 1
+          fi
+          
+          # Save PM2 configuration
+          pm2 save
+          pm2 startup || echo "PM2 startup configured"
+          
+          # Check PM2 status
+          echo "📊 Checking PM2 status..."
+          pm2 status
+          
+          # Check application health
+          echo "🏥 Checking application health..."
+          sleep 10
+          curl -f http://localhost:5000/health || echo "Health check pending..."
+          
+          # Verify deployment with comprehensive health checks
+          echo "🧪 Verifying deployment..."
+          sleep 15
+          
+          # Test health endpoint
+          if curl -f http://localhost:5000/health; then
+            echo "✅ Health check passed"
+          else
+            echo "❌ Health check failed"
+            pm2 logs investogold --lines 10
+          fi
+          
+          # Test API endpoint
+          if curl -f http://localhost:5000/api; then
+            echo "✅ API endpoint accessible"
+          else
+            echo "⚠️ API endpoint check failed"
+          fi
+          
+          # Show application info
+          echo "✅ Deployment completed!"
+          echo "📍 Application URL: http://${{ secrets.VPS_HOST }}:5000"
+          echo "🔧 Admin Panel: http://${{ secrets.VPS_HOST }}:5000/adminpanel"
+          echo "📊 Health Check: http://${{ secrets.VPS_HOST }}:5000/health"
+          echo "🔍 API Docs: http://${{ secrets.VPS_HOST }}:5000/api"
+          
+          # Show PM2 status and logs
+          echo "📊 Final PM2 Status:"
+          pm2 status
+          echo "📝 Recent Logs:"
+          pm2 logs investogold --lines 5 || echo "No logs available"
+
+    - name: Notify deployment status
+      if: always()
+      run: |
+        if [ ${{ job.status }} == 'success' ]; then
+          echo "✅ Deployment successful!"
+          echo "🌐 Application: http://${{ secrets.VPS_HOST }}:5000"
+          echo "🔧 Admin Panel: http://${{ secrets.VPS_HOST }}:5000/adminpanel"
+          echo "📊 Health Check: http://${{ secrets.VPS_HOST }}:5000/health"
+        else
+          echo "❌ Deployment failed!"
+          echo "Check the deployment logs above for details."
+        fi

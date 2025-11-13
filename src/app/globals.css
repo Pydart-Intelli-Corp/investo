@@ -1,0 +1,430 @@
+@import "tailwindcss";
+
+/* Global styles for smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #3b82f6, #8b5cf6);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #2563eb, #7c3aed);
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+  --border-color: #e5e7eb;
+  --input-bg: #ffffff;
+  --input-border: #d1d5db;
+  --input-focus: #3b82f6;
+  --button-primary: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  --button-primary-hover: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+  --button-secondary: #ffffff;
+  --button-secondary-border: #3b82f6;
+  --button-secondary-text: #3b82f6;
+  --button-secondary-hover-bg: #3b82f6;
+  --button-secondary-hover-text: #ffffff;
+  --success-color: #10b981;
+  --error-color: #ef4444;
+  --warning-color: #f59e0b;
+}
+
+/* Force light theme colors - override system preferences */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Keep light theme colors even in dark mode system preference */
+    --background: #ffffff;
+    --foreground: #171717;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --text-muted: #9ca3af;
+    --border-color: #e5e7eb;
+    --input-bg: #ffffff;
+    --input-border: #d1d5db;
+    --input-focus: #3b82f6;
+  }
+}
+
+body {
+  background: var(--background) !important;
+  color: var(--foreground) !important;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Force consistent colors for form elements */
+input, textarea, select {
+  background-color: var(--input-bg) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--input-border) !important;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--input-focus) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Force button visibility */
+button {
+  color: inherit !important;
+}
+
+/* Ensure text is always visible */
+.text-gray-600 {
+  color: var(--text-secondary) !important;
+}
+
+.text-gray-700 {
+  color: var(--text-primary) !important;
+}
+
+.text-gray-800 {
+  color: var(--text-primary) !important;
+}
+
+.text-gray-900 {
+  color: var(--text-primary) !important;
+}
+
+.text-gray-500 {
+  color: var(--text-muted) !important;
+}
+
+.text-gray-400 {
+  color: var(--text-muted) !important;
+}
+
+/* Force consistent border colors */
+.border-gray-300 {
+  border-color: var(--border-color) !important;
+}
+
+.border-gray-200 {
+  border-color: var(--border-color) !important;
+}
+
+/* Ensure proper contrast for links and buttons */
+a {
+  color: var(--button-secondary-text) !important;
+}
+
+a:hover {
+  color: var(--button-primary-hover) !important;
+}
+
+/* Force visibility for form elements */
+input[type="text"], 
+input[type="email"], 
+input[type="password"], 
+input[type="tel"], 
+textarea, 
+select {
+  background-color: #ffffff !important;
+  color: #1f2937 !important;
+  border-color: #d1d5db !important;
+}
+
+input[type="text"]:focus, 
+input[type="email"]:focus, 
+input[type="password"]:focus, 
+input[type="tel"]:focus, 
+textarea:focus, 
+select:focus {
+  background-color: #ffffff !important;
+  color: #1f2937 !important;
+  border-color: #3b82f6 !important;
+}
+
+/* Ensure placeholder text is visible */
+input::placeholder,
+textarea::placeholder {
+  color: #9ca3af !important;
+  opacity: 1 !important;
+}
+
+/* Ensure labels are visible */
+label {
+  color: #1f2937 !important;
+}
+
+/* Ensure button text is always visible */
+button {
+  position: relative;
+}
+
+/* Ensure dropdown menus are visible */
+.bg-white {
+  background-color: #ffffff !important;
+  color: #1f2937 !important;
+}
+
+/* Override any system auto-fill styles */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  -webkit-text-fill-color: #1f2937 !important;
+}
+
+/* Ensure consistent text color for form elements */
+.bg-white input,
+.bg-white textarea,
+.bg-white select {
+  color: #1f2937 !important;
+}
+
+/* Hover effect visibility fixes */
+.group:hover .group-hover\:text-transparent {
+  color: #3b82f6 !important; /* Force blue color instead of transparent */
+  background: none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+}
+
+/* Ensure hover effects maintain readability */
+a:hover,
+button:hover,
+.hover\:text-blue-400:hover,
+.hover\:text-gray-300:hover,
+.hover\:text-white:hover {
+  opacity: 1 !important;
+}
+
+/* Force visible text on dark backgrounds */
+.bg-black .text-gray-400,
+.bg-gray-900 .text-gray-400,
+.bg-gradient-to-br .text-gray-400 {
+  color: #d1d5db !important; /* Lighter gray for dark backgrounds */
+}
+
+.bg-black .text-gray-500,
+.bg-gray-900 .text-gray-500,
+.bg-gradient-to-br .text-gray-500 {
+  color: #9ca3af !important;
+}
+
+/* Enhance link visibility on dark backgrounds */
+.bg-gradient-to-br a,
+.bg-black a,
+.bg-gray-900 a {
+  color: #93c5fd !important; /* Light blue for dark backgrounds */
+}
+
+.bg-gradient-to-br a:hover,
+.bg-black a:hover,
+.bg-gray-900 a:hover {
+  color: #ffffff !important; /* White on hover for dark backgrounds */
+}
+
+/* Header button hover fixes */
+header .hover\:text-black:hover,
+header .hover\:text-gray-900:hover {
+  color: #000000 !important; /* Force black text on white background */
+  opacity: 1 !important;
+}
+
+/* Ensure header buttons maintain contrast */
+header .border-white:hover {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+/* Force all buttons to have white text */
+button[class*="bg-gradient"],
+button[class*="bg-blue"],
+button[class*="bg-purple"],
+button[class*="bg-green"],
+button[class*="bg-red"],
+button[class*="bg-yellow"],
+button[class*="bg-orange"],
+button[class*="bg-indigo"],
+button[class*="bg-pink"],
+a[class*="bg-gradient"],
+a[class*="bg-blue"],
+a[class*="bg-purple"],
+a[class*="bg-green"],
+a[class*="bg-red"],
+a[class*="bg-yellow"],
+a[class*="bg-orange"],
+a[class*="bg-indigo"],
+a[class*="bg-pink"] {
+  color: #ffffff !important;
+}
+
+/* Force button-like links to have white text */
+.px-8.py-4,
+.px-8.py-3,
+.px-6.py-3,
+.px-4.py-2 {
+  color: #ffffff !important;
+}
+
+/* Ensure border buttons with backgrounds have white text */
+.border-2[class*="bg-"],
+.border[class*="bg-"] {
+  color: #ffffff !important;
+}
+
+/* Section transition effects */
+.section-transition {
+  transition: background-color 1s ease-in-out, background-image 1s ease-in-out;
+}
+
+/* Enhanced animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes spin-slow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Animation utility classes */
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.6s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.6s ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.6s ease-out;
+}
+
+.animate-scroll {
+  animation: scroll 30s linear infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+.gradient-text {
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+/* Intersection Observer animations */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Enhanced hover effects */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Smooth focus styles */
+.focus-ring:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Image loading effects */
+.image-fade-in {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.image-fade-in.loaded {
+  opacity: 1;
+}
