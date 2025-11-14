@@ -61,9 +61,7 @@ const Affiliate = sequelize.define('Affiliate', {
     type: DataTypes.JSON,
     allowNull: true,
     defaultValue: {
-      level1: 0, level2: 0, level3: 0, level4: 0, level5: 0,
-      level6: 0, level7: 0, level8: 0, level9: 0, level10: 0,
-      level11: 0, level12: 0, level13: 0, level14: 0, level15: 0
+      level1: 0, level2: 0, level3: 0, level4: 0, level5: 0
     }
   },
   
@@ -102,9 +100,7 @@ const Affiliate = sequelize.define('Affiliate', {
     type: DataTypes.JSON,
     allowNull: true,
     defaultValue: {
-      level1: 0, level2: 0, level3: 0, level4: 0, level5: 0,
-      level6: 0, level7: 0, level8: 0, level9: 0, level10: 0,
-      level11: 0, level12: 0, level13: 0, level14: 0, level15: 0
+      level1: 0, level2: 0, level3: 0, level4: 0, level5: 0
     }
   },
   
@@ -153,9 +149,7 @@ const Affiliate = sequelize.define('Affiliate', {
     allowNull: true,
     defaultValue: {
       customRates: {
-        level1: null, level2: null, level3: null, level4: null, level5: null,
-        level6: null, level7: null, level8: null, level9: null, level10: null,
-        level11: null, level12: null, level13: null, level14: null, level15: null
+        level1: null, level2: null, level3: null, level4: null, level5: null
       },
       bonusMultiplier: 1,
       specialBonus: 0
@@ -268,7 +262,7 @@ const Affiliate = sequelize.define('Affiliate', {
 Affiliate.prototype.getActiveLevels = function() {
   let count = 0;
   const levelCounts = this.levelCounts || {};
-  for (let i = 1; i <= 15; i++) {
+  for (let i = 1; i <= 5; i++) {
     if (levelCounts[`level${i}`] > 0) {
       count = i;
     }
@@ -311,7 +305,7 @@ Affiliate.prototype.addReferral = async function(level = 1) {
     this.directReferrals += 1;
   }
   
-  if (level >= 1 && level <= 15) {
+  if (level >= 1 && level <= 5) {
     const levelCounts = { ...this.levelCounts };
     levelCounts[`level${level}`] = (levelCounts[`level${level}`] || 0) + 1;
     this.levelCounts = levelCounts;
@@ -329,7 +323,7 @@ Affiliate.prototype.addCommission = async function(amount, level = 1) {
   this.totalCommissions = parseFloat(this.totalCommissions) + amount;
   this.availableCommissions = parseFloat(this.availableCommissions) + amount;
   
-  if (level >= 1 && level <= 15) {
+  if (level >= 1 && level <= 5) {
     const levelEarnings = { ...this.levelEarnings };
     levelEarnings[`level${level}`] = (levelEarnings[`level${level}`] || 0) + amount;
     this.levelEarnings = levelEarnings;
@@ -387,23 +381,14 @@ Affiliate.prototype.getCommissionRate = function(level) {
     return customRate;
   }
   
-  // Use default rates from environment
+  // Use default rates from environment or hardcoded defaults
+  // Level 1: 10%, Level 2: 5%, Level 3: 3%, Level 4: 2%, Level 5: 1%
   const defaultRates = {
-    1: parseFloat(process.env.LEVEL_1_COMMISSION) || 5.0,
-    2: parseFloat(process.env.LEVEL_2_COMMISSION) || 2.0,
-    3: parseFloat(process.env.LEVEL_3_COMMISSION) || 2.0,
+    1: parseFloat(process.env.LEVEL_1_COMMISSION) || 10.0,
+    2: parseFloat(process.env.LEVEL_2_COMMISSION) || 5.0,
+    3: parseFloat(process.env.LEVEL_3_COMMISSION) || 3.0,
     4: parseFloat(process.env.LEVEL_4_COMMISSION) || 2.0,
-    5: parseFloat(process.env.LEVEL_5_COMMISSION) || 2.0,
-    6: parseFloat(process.env.LEVEL_6_COMMISSION) || 1.0,
-    7: parseFloat(process.env.LEVEL_7_COMMISSION) || 1.0,
-    8: parseFloat(process.env.LEVEL_8_COMMISSION) || 1.0,
-    9: parseFloat(process.env.LEVEL_9_COMMISSION) || 1.0,
-    10: parseFloat(process.env.LEVEL_10_COMMISSION) || 1.0,
-    11: parseFloat(process.env.LEVEL_11_COMMISSION) || 0.5,
-    12: parseFloat(process.env.LEVEL_12_COMMISSION) || 0.5,
-    13: parseFloat(process.env.LEVEL_13_COMMISSION) || 0.5,
-    14: parseFloat(process.env.LEVEL_14_COMMISSION) || 0.5,
-    15: parseFloat(process.env.LEVEL_15_COMMISSION) || 0.5
+    5: parseFloat(process.env.LEVEL_5_COMMISSION) || 1.0
   };
   
   return defaultRates[level] || 0;
