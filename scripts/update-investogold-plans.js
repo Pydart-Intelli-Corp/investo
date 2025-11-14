@@ -126,13 +126,13 @@ async function updateInvestoGoldPlans() {
 
     console.log('👤 Admin user found:', adminUser.email, '\n');
 
-    // Deactivate existing portfolios
-    console.log('📦 Deactivating old portfolios...');
-    await Portfolio.update(
-      { isActive: false, isVisible: false },
-      { where: {} }
-    );
-    console.log('✅ Old portfolios deactivated\n');
+    // Delete existing portfolios to avoid slug conflicts
+    console.log('📦 Deleting old portfolios...');
+    await Portfolio.destroy({
+      where: {},
+      force: true
+    });
+    console.log('✅ Old portfolios deleted\n');
 
     // Create new InvestoGold plans
     console.log('🆕 Creating new InvestoGold plans...\n');
