@@ -64,8 +64,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
   const [copied, setCopied] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const subscriptionFee = 25;
-  const totalAmount = investmentAmount + subscriptionFee;
+  const totalAmount = investmentAmount;
 
   // Check authentication status
   useEffect(() => {
@@ -191,7 +190,6 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
       const formData = new FormData();
       formData.append('portfolioId', portfolio.id.toString());
       formData.append('amount', investmentAmount.toString());
-      formData.append('subscriptionFee', subscriptionFee.toString());
       formData.append('totalAmount', totalAmount.toString());
       formData.append('adminWalletId', selectedWallet.id.toString());
       formData.append('paymentType', selectedWallet.walletType);
@@ -305,11 +303,6 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
                 <div className="flex justify-between py-2">
                   <span className="text-gray-600">Investment Amount:</span>
                   <span className="font-medium">${investmentAmount.toLocaleString()}</span>
-                </div>
-                
-                <div className="flex justify-between py-2">
-                  <span className="text-gray-600">Bot Subscription (Yearly):</span>
-                  <span className="font-medium">${subscriptionFee}</span>
                 </div>
                 
                 <div className="border-t pt-2">

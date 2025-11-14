@@ -90,21 +90,8 @@ router.post('/generate', protect, adminOnly, async (req, res) => {
   try {
     const { email, firstName, lastName, customCode } = req.body;
 
-    if (!email || !firstName || !lastName) {
-      return res.status(400).json({
-        success: false,
-        message: 'Email, first name, and last name are required'
-      });
-    }
-
-    // Check if email already exists
-    const existingUser = await User.findOne({ where: { email } });
-    if (existingUser) {
-      return res.status(400).json({
-        success: false,
-        message: 'User with this email already exists'
-      });
-    }
+    // Email, firstName, lastName are optional - just for reference/labeling
+    const refLabel = firstName && lastName ? `${firstName} ${lastName}` : (email || 'Generated');
 
     // Generate referral code
     let referralCode;
@@ -119,9 +106,10 @@ router.post('/generate', protect, adminOnly, async (req, res) => {
         });
       }
     } else {
-      // Generate random code
-      const baseCode = firstName.substring(0, 3).toUpperCase() + 
-                      lastName.substring(0, 3).toUpperCase();
+      // Generate random code based on input or random
+      const baseCode = firstName && lastName 
+        ? (firstName.substring(0, 3) + lastName.substring(0, 3)).toUpperCase()
+        : 'INV';
       const randomSuffix = crypto.randomBytes(4).toString('hex').toUpperCase();
       referralCode = baseCode + randomSuffix;
 
@@ -136,68 +124,15 @@ router.post('/generate', protect, adminOnly, async (req, res) => {
       }
     }
 
-    // Generate temporary password
-    const tempPassword = crypto.randomBytes(8).toString('hex');
-    const bcrypt = require('bcryptjs');
-    const hashedPassword = await bcrypt.hash(tempPassword, 12);
+    // Store the referral code info for tracking (optional - could store in a separate table)
+    // For now, just return the code without creating a user account
+    
+    const referralLink = `http://72.61.144.187:85/register?ref=${referralCode}`;
 
-    // Create user
-    const newUser = await User.create({
-      email,
-      password: hashedPassword,
-      firstName,
-      lastName,
-      referralCode,
-      role: 'user',
-      isActive: true,
-      isEmailVerified: false,
-      isProfileComplete: false,
-      walletBalance: 0,
-      totalDeposited: 0,
-      totalWithdrawn: 0,
-      totalEarnings: 0,
-      totalCommissions: 0,
-      currentRank: 'Bronze',
-      subscriptionStatus: 'none',
-      botActive: false,
-      dailyROI: 0,
-      loginAttempts: 0,
-      referralLevel: 0,
-      totalReferrals: 0,
-      directReferrals: 0
-    });
-
-    // Create affiliate record
-    await Affiliate.create({
-      userId: newUser.id,
-      referralCode,
-      referralLink: `${process.env.FRONTEND_URL || 'http://localhost:5000'}/register?ref=${referralCode}`,
-      totalReferrals: 0,
-      activeReferrals: 0,
-      directReferrals: 0,
-      levelCounts: {},
-      totalCommissions: 0,
-      availableCommissions: 0,
-      withdrawnCommissions: 0,
-      pendingCommissions: 0,
-      levelEarnings: {},
-      teamStats: {},
-      performanceMetrics: {},
-      clickStats: {},
-      commissionSettings: {},
-      achievements: {},
-      marketingTools: {},
-      isActive: true,
-      isPremiumAffiliate: false,
-      tier: 'Bronze',
-      payoutSettings: {}
-    });
-
-    logger.info('New referral link generated', {
+    logger.info('New referral code generated', {
       adminId: req.user.id,
-      userId: newUser.id,
-      email,
       referralCode,
+      label: refLabel,
       generatedBy: req.user.email
     });
 
@@ -205,13 +140,10 @@ router.post('/generate', protect, adminOnly, async (req, res) => {
       success: true,
       message: 'Referral link generated successfully',
       data: {
-        userId: newUser.id,
-        email,
         referralCode,
-        referralLink: `${process.env.FRONTEND_URL || 'http://localhost:5000'}/register?ref=${referralCode}`,
-        tempPassword,
-        firstName,
-        lastName
+        referralLink,
+        label: refLabel,
+        note: 'This link can be shared with anyone. When they register, they will be connected to the referring user.'
       }
     });
 

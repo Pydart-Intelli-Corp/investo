@@ -18,6 +18,7 @@ import {
   AlertCircle,
   ChevronLeft,
   ChevronRight,
+  Trash2,
 } from 'lucide-react';
 
 interface User {
@@ -160,6 +161,42 @@ const UsersManagement = () => {
     }
   };
 
+  const deleteUser = async (userId: number) => {
+    const confirmDelete = window.confirm(
+      'Are you sure you want to delete this user? This will permanently delete:\n\n' +
+      '• User account\n' +
+      '• All transactions\n' +
+      '• All portfolios\n' +
+      '• Affiliate records\n\n' +
+      'This action CANNOT be undone!'
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      const token = localStorage.getItem('adminToken');
+      const response = await fetch(`/api/admin/users/${userId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        setShowUserDetails(false);
+        setSelectedUser(null);
+        fetchUsers(); // Refresh the list
+        alert('User deleted successfully');
+      } else {
+        const data = await response.json();
+        alert(data.message || 'Failed to delete user');
+      }
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      alert('Error deleting user');
+    }
+  };
+
   const getRankColor = (rank: string) => {
     const colors = {
       Bronze: 'text-orange-600 bg-orange-100',
@@ -266,6 +303,13 @@ const UsersManagement = () => {
             ) : (
               <CheckCircle className="h-4 w-4 text-green-600" />
             )}
+          </button>
+          <button
+            onClick={() => deleteUser(user.id)}
+            className="p-1 hover:bg-red-100 rounded"
+            title="Delete User"
+          >
+            <Trash2 className="h-4 w-4 text-red-600" />
           </button>
         </div>
       </div>
@@ -422,6 +466,13 @@ const UsersManagement = () => {
                 }`}
               >
                 {selectedUser.isActive ? 'Deactivate Account' : 'Activate Account'}
+              </button>
+              <button
+                onClick={() => deleteUser(selectedUser.id)}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium flex items-center space-x-2"
+              >
+                <Trash2 className="h-4 w-4" />
+                <span>Delete User</span>
               </button>
               <button
                 onClick={() => setShowUserDetails(false)}

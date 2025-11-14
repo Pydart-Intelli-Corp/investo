@@ -2,7 +2,7 @@ const express = require('express');
 const { body, validationResult, query } = require('express-validator');
 const { Op } = require('sequelize');
 const { sequelize } = require('../config/database');
-const { User, Portfolio, Transaction, Affiliate } = require('../models');
+const { User, Portfolio, Transaction, Affiliate, Payment } = require('../models');
 const { 
   asyncHandler, 
   validationError, 
@@ -261,6 +261,81 @@ const updateUserRank = asyncHandler(async (req, res) => {
     },
     timestamp: new Date().toISOString()
   });
+});
+
+// @desc    Delete user and all associated data
+// @route   DELETE /api/admin/users/:id
+// @access  Private/Admin
+const deleteUser = asyncHandler(async (req, res) => {
+  const userId = parseInt(req.params.id);
+
+  if (!userId || userId <= 0) {
+    return validationError('Invalid user ID', res);
+  }
+
+  // Find user
+  const user = await User.findByPk(userId);
+  if (!user) {
+    return notFoundError('User not found', res);
+  }
+
+  // Prevent deleting admin users
+  if (user.isAdmin) {
+    return res.status(403).json({
+      success: false,
+      message: 'Cannot delete admin users',
+      timestamp: new Date().toISOString()
+    });
+  }
+
+  try {
+    // Start transaction to delete all related data
+    await sequelize.transaction(async (t) => {
+      // Delete user's payments
+      await Payment.destroy({ where: { userId }, transaction: t });
+
+      // Delete user's affiliate record
+      await Affiliate.destroy({ where: { userId }, transaction: t });
+
+      // Delete user's transactions
+      await Transaction.destroy({ where: { userId }, transaction: t });
+
+      // Delete portfolios created by this user
+      await Portfolio.destroy({ where: { createdBy: userId }, transaction: t });
+
+      // Update referrals - set referredBy to null for users who were referred by this user
+      await User.update(
+        { referredBy: null },
+        { where: { referredBy: userId }, transaction: t }
+      );
+
+      // Finally, delete the user
+      await user.destroy({ transaction: t });
+    });
+
+    logger.logAdminAction(req.user.id, 'USER_DELETE', userId, { 
+      email: user.email, 
+      name: `${user.firstName} ${user.lastName}` 
+    });
+
+    res.status(200).json({
+      success: true,
+      message: 'User and all associated data deleted successfully',
+      data: {
+        userId,
+        email: user.email
+      },
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to delete user',
+      error: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
 });
 
 // @desc    Get pending deposits
@@ -691,6 +766,7 @@ router.get('/users', getUsers);
 router.get('/users/:id', getUserDetails);
 router.put('/users/:id/status', updateUserStatus);
 router.put('/users/:id/rank', updateUserRank);
+router.delete('/users/:id', deleteUser);
 router.get('/deposits/pending', getPendingDeposits);
 router.put('/deposits/:id/approve', approveDeposit);
 router.put('/deposits/:id/reject', rejectDeposit);

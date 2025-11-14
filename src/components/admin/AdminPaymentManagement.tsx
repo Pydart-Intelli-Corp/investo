@@ -27,7 +27,6 @@ interface PaymentRequest {
   userId: number;
   portfolioId: number;
   amount: number;
-  subscriptionFee: number;
   totalAmount: number;
   paymentType: string;
   networkType: string;
@@ -296,14 +295,23 @@ export default function AdminPaymentManagement() {
     }).format(amount);
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+  const formatDate = (dateString: string | null) => {
+    if (!dateString) return 'N/A';
+    
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) return 'Invalid Date';
+      
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    } catch (error) {
+      return 'Invalid Date';
+    }
   };
 
   const handleBulkAction = async (action: 'approve' | 'reject') => {
@@ -387,7 +395,6 @@ export default function AdminPaymentManagement() {
       'User Email',
       'Portfolio',
       'Investment Amount',
-      'Subscription Fee',
       'Total Amount',
       'Payment Type',
       'Network Type',
@@ -404,7 +411,6 @@ export default function AdminPaymentManagement() {
       payment.user.email,
       payment.portfolio.name,
       payment.amount,
-      payment.subscriptionFee,
       payment.totalAmount,
       payment.paymentType,
       payment.networkType,
@@ -719,9 +725,6 @@ export default function AdminPaymentManagement() {
                         <div className="text-xs text-gray-400">
                           Investment: {formatCurrency(payment.amount)}
                         </div>
-                        <div className="text-xs text-gray-400">
-                          Fee: {formatCurrency(payment.subscriptionFee)}
-                        </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -853,10 +856,6 @@ export default function AdminPaymentManagement() {
                     <p className="mt-1 text-sm text-white">{formatCurrency(selectedPayment.amount)}</p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-300">Subscription Fee</label>
-                    <p className="mt-1 text-sm text-white">{formatCurrency(selectedPayment.subscriptionFee)}</p>
-                  </div>
-                  <div>
                     <label className="block text-sm font-medium text-gray-300">Total Amount</label>
                     <p className="mt-1 text-sm font-medium text-white">{formatCurrency(selectedPayment.totalAmount)}</p>
                   </div>
@@ -896,9 +895,12 @@ export default function AdminPaymentManagement() {
                   <label className="block text-sm font-medium text-gray-300 mb-2">Payment Screenshot</label>
                   <div className="border border-slate-600 rounded-lg overflow-hidden bg-slate-700">
                     <img 
-                      src={selectedPayment.screenshotUrl} 
+                      src={`http://72.61.144.187:85${selectedPayment.screenshotUrl}`}
                       alt="Payment Screenshot"
                       className="w-full h-64 object-contain"
+                      onError={(e) => {
+                        e.currentTarget.src = selectedPayment.screenshotUrl;
+                      }}
                     />
                   </div>
                 </div>

@@ -50,7 +50,6 @@ router.post('/submit', protect, upload.single('screenshot'), async (req, res) =>
     const {
       portfolioId,
       amount,
-      subscriptionFee,
       totalAmount,
       adminWalletId,
       paymentType,
@@ -87,7 +86,7 @@ router.post('/submit', protect, upload.single('screenshot'), async (req, res) =>
       userId,
       portfolioId: parseInt(portfolioId),
       amount: parseFloat(amount),
-      subscriptionFee: parseFloat(subscriptionFee || 25),
+      subscriptionFee: 0,
       totalAmount: parseFloat(totalAmount),
       paymentType: paymentType || 'USDT',
       networkType: networkType || 'BEP20',

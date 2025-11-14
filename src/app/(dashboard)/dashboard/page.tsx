@@ -77,11 +77,34 @@ interface DashboardUser {
   totalWithdrawn: number;
   totalEarnings: number;
   totalCommissions: number;
+  availableCommissions: number;
+  withdrawnCommissions: number;
   currentRank: string;
   directReferrals: number;
   totalReferrals: number;
   subscriptionStatus: string;
   isProfileComplete: boolean;
+  levelCounts?: {
+    level1?: number;
+    level2?: number;
+    level3?: number;
+    level4?: number;
+    level5?: number;
+  };
+  levelEarnings?: {
+    level1?: number;
+    level2?: number;
+    level3?: number;
+    level4?: number;
+    level5?: number;
+  };
+  commissionsByLevel?: {
+    level1?: number;
+    level2?: number;
+    level3?: number;
+    level4?: number;
+    level5?: number;
+  };
 }
 
 interface Transaction {
@@ -426,7 +449,7 @@ const Dashboard: React.FC = () => {
                 <h3 className="text-xl font-bold text-white">Referral Program</h3>
                 <div className="flex items-center space-x-2">
                   <Star className="h-5 w-5 text-yellow-500" />
-                  <span className="text-sm font-medium text-gray-400">Premium Member</span>
+                  <span className="text-sm font-medium text-gray-400">5-Level System</span>
                 </div>
               </div>
               
@@ -454,14 +477,56 @@ const Dashboard: React.FC = () => {
                 </div>
               </div>
               
+              {/* Commission Breakdown by Levels */}
+              {user.levelEarnings && Object.keys(user.levelEarnings).length > 0 && (
+                <div className="mb-4">
+                  <h4 className="text-sm font-medium text-gray-400 mb-3">Commission Breakdown</h4>
+                  <div className="space-y-2">
+                    {[1, 2, 3, 4, 5].map((level) => {
+                      const earnings = user.levelEarnings?.[`level${level}` as keyof typeof user.levelEarnings] || 0;
+                      const count = user.levelCounts?.[`level${level}` as keyof typeof user.levelCounts] || 0;
+                      const rates = { 1: '10%', 2: '5%', 3: '3%', 4: '2%', 5: '1%' };
+                      
+                      if (earnings > 0 || count > 0) {
+                        return (
+                          <div key={level} className="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg border border-gray-700">
+                            <div className="flex items-center space-x-3">
+                              <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold ${
+                                level === 1 ? 'bg-green-500 text-white' :
+                                level === 2 ? 'bg-blue-500 text-white' :
+                                level === 3 ? 'bg-purple-500 text-white' :
+                                level === 4 ? 'bg-amber-500 text-white' :
+                                'bg-red-500 text-white'
+                              }`}>
+                                L{level}
+                              </div>
+                              <div>
+                                <p className="text-sm font-medium text-white">Level {level} ({rates[level as keyof typeof rates]})</p>
+                                <p className="text-xs text-gray-400">{count} referral{count !== 1 ? 's' : ''}</p>
+                              </div>
+                            </div>
+                            <div className="text-right">
+                              <p className="text-sm font-bold text-green-400">
+                                ${parseFloat(earnings.toString()).toFixed(2)}
+                              </p>
+                            </div>
+                          </div>
+                        );
+                      }
+                      return null;
+                    })}
+                  </div>
+                </div>
+              )}
+              
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center p-3 bg-green-50 rounded-lg">
-                  <p className="text-sm text-gray-400">Commission Rate</p>
-                  <p className="text-lg font-bold text-green-400">10%</p>
+                  <p className="text-sm text-gray-400">Total Earned</p>
+                  <p className="text-lg font-bold text-green-400">${parseFloat(user.totalCommissions.toString()).toFixed(2)}</p>
                 </div>
                 <div className="text-center p-3 bg-amber-50 rounded-lg">
-                  <p className="text-sm text-gray-400">Bonus Levels</p>
-                  <p className="text-lg font-bold text-amber-600">5 Tiers</p>
+                  <p className="text-sm text-gray-400">Network Size</p>
+                  <p className="text-lg font-bold text-amber-600">{user.totalReferrals}</p>
                 </div>
               </div>
             </motion.div>

@@ -422,16 +422,18 @@ const LoginPage = () => {
                     animate={{ opacity: 1, y: 0 }}
                     className={`flex items-center space-x-3 rounded-xl p-4 ${
                       isSuccess 
-                        ? 'text-green-700 bg-green-50 border border-green-200' 
-                        : 'text-red-700 bg-red-50 border border-red-200'
+                        ? 'bg-green-50 border border-green-200' 
+                        : 'bg-red-50 border border-red-200'
                     }`}
                   >
                     {isSuccess ? (
-                      <CheckCircle className="h-5 w-5 flex-shrink-0" />
+                      <CheckCircle className="h-5 w-5 flex-shrink-0 text-green-600" />
                     ) : (
-                      <AlertCircle className="h-5 w-5 flex-shrink-0" />
+                      <AlertCircle className="h-5 w-5 flex-shrink-0 text-red-600" />
                     )}
-                    <span className="text-sm font-medium">{error}</span>
+                    <span className={`text-sm font-medium ${isSuccess ? 'text-green-800' : 'text-red-800'}`}>
+                      {error}
+                    </span>
                   </motion.div>
                 )}
 

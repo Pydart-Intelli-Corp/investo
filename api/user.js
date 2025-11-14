@@ -38,18 +38,61 @@ const getUserProfile = asyncHandler(async (req, res) => {
       });
     }
 
-    // Get additional stats
+    // Get affiliate data with level-wise earnings
     const affiliate = await Affiliate.findOne({ 
       where: { userId: user.id },
-      attributes: ['totalCommissions', 'totalReferrals', 'directReferrals']
+      attributes: [
+        'totalCommissions', 'availableCommissions', 'withdrawnCommissions',
+        'totalReferrals', 'directReferrals', 'levelCounts', 'levelEarnings'
+      ]
     });
 
-    // Update user data with affiliate info if available
+    // Calculate commission transactions from Transaction table
+    const { sequelize } = require('../config/database');
+    const commissionStats = await Transaction.findAll({
+      where: {
+        userId: user.id,
+        type: 'commission',
+        status: 'completed'
+      },
+      attributes: [
+        'description',
+        [sequelize.fn('SUM', sequelize.col('amount')), 'total']
+      ],
+      group: ['description'],
+      raw: true
+    });
+
+    // Parse level commissions from transaction descriptions
+    const levelCommissions = {};
+    let totalCommissionsFromTransactions = 0;
+    
+    commissionStats.forEach(stat => {
+      const amount = parseFloat(stat.total) || 0;
+      totalCommissionsFromTransactions += amount;
+      
+      // Extract level from description like "Level 1 referral commission"
+      const levelMatch = stat.description?.match(/Level (\d+)/);
+      if (levelMatch) {
+        const level = parseInt(levelMatch[1]);
+        levelCommissions[`level${level}`] = amount;
+      }
+    });
+
+    // Merge with affiliate level earnings if available
+    const finalLevelEarnings = affiliate?.levelEarnings || levelCommissions;
+    
+    // Update user data with accurate commission info
     const profileData = {
       ...user.toJSON(),
-      totalCommissions: affiliate?.totalCommissions || user.totalCommissions,
+      totalCommissions: affiliate?.totalCommissions || totalCommissionsFromTransactions,
+      availableCommissions: affiliate?.availableCommissions || 0,
+      withdrawnCommissions: affiliate?.withdrawnCommissions || 0,
       totalReferrals: affiliate?.totalReferrals || user.totalReferrals,
-      directReferrals: affiliate?.directReferrals || user.directReferrals
+      directReferrals: affiliate?.directReferrals || user.directReferrals,
+      levelCounts: affiliate?.levelCounts || {},
+      levelEarnings: finalLevelEarnings,
+      commissionsByLevel: levelCommissions
     };
 
     res.status(200).json({
