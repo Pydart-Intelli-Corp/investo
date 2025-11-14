@@ -7,88 +7,49 @@ import { CheckCircle, TrendingUp, Zap, Shield, Rocket, Target, Wallet, Crown } f
 const TradingPortfoliosSection = () => {
   const portfolios = [
     {
-      name: "Basic Pack (30-Day)",
-      dailyPnl: "1.0%/day",
-      portfolioRange: "$100 - $5,000",
-      duration: "30 days",
+      name: "AI-Driven Trade Portfolio",
+      dailyPnl: "7-10%/month",
+      portfolioRange: "$1,000 - $100,000",
+      duration: "24 months",
       capitalReturned: true,
-      aiImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop&crop=center",
-      gradient: "from-green-500 to-emerald-500",
-      description: "AI arbitrage engine with consistent daily returns",
-      features: ["AI Arbitrage", "Auto Trading", "Daily Compounding"],
-      totalReturn: "300% total",
-      profitLimit: "3x limit"
+      aiImage: "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=400&h=300&fit=crop&crop=center",
+      gradient: "from-yellow-500 to-amber-500",
+      description: "Diversified gold & commodity trades using AI arbitrage and market intelligence",
+      features: ["AI-Powered Trading", "Monthly 7-10% Target", "Principal Returned", "24-Month Term"],
+      totalReturn: "100-120% annualized",
+      profitLimit: "Steady monthly performance"
     },
     {
-      name: "Basic Pack (365-Day)",
-      dailyPnl: "1.25%/day",
-      portfolioRange: "$100 - $5,000",
-      duration: "365 days",
+      name: "Gold Vault Investment",
+      dailyPnl: "12-15%/year",
+      portfolioRange: "$5,000 - $500,000",
+      duration: "12 months",
       capitalReturned: true,
-      aiImage: "https://images.unsplash.com/photo-1642790106117-e829e14a795f?w=400&h=300&fit=crop&crop=center",
-      gradient: "from-green-600 to-teal-500",
-      description: "Extended AI trading with enhanced daily returns",
-      features: ["Enhanced ROI", "Long-term Growth", "Capital Protection"],
-      totalReturn: "300% total",
-      profitLimit: "3x limit"
+      aiImage: "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=400&h=300&fit=crop&crop=center",
+      gradient: "from-amber-600 to-yellow-700",
+      description: "Physical gold in UAE vaults with insurance and transparent ownership",
+      features: ["Physical Gold", "Fully Insured", "Monthly Yield", "Price Appreciation"],
+      totalReturn: "12-15% annual premium",
+      profitLimit: "Tangible asset security",
+      isElite: true,
+      subscriptionFee: null,
+      walletInfo: "Physical Gold Storage"
     },
     {
-      name: "Premium Pack (30-Day)",
-      dailyPnl: "1.5%/day",
-      portfolioRange: "$5,001 - $25,000",
-      duration: "30 days",
-      capitalReturned: true,
-      aiImage: "https://images.unsplash.com/photo-1639322537228-f710d846310a?w=400&h=300&fit=crop&crop=center",
-      gradient: "from-purple-500 to-pink-500",
-      description: "Premium AI algorithms with higher profit margins",
-      features: ["Premium Algorithms", "Priority Execution", "Advanced Analytics"],
-      totalReturn: "350% total",
-      profitLimit: "3.5x limit"
-    },
-    {
-      name: "Premium Pack (365-Day)",
-      dailyPnl: "1.75%/day",
-      portfolioRange: "$5,001 - $25,000",
-      duration: "365 days",
-      capitalReturned: true,
+      name: "Weekly Arbitrage Strategy",
+      dailyPnl: "3-5%/week",
+      portfolioRange: "$10,000 - $1,000,000",
+      duration: "24 months",
+      capitalReturned: false,
       aiImage: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=300&fit=crop&crop=center",
-      gradient: "from-purple-600 to-violet-500",
-      description: "Extended premium trading with maximized returns",
-      features: ["Maximum ROI", "Premium Support", "Exclusive Features"],
-      totalReturn: "350% total",
-      profitLimit: "3.5x limit"
-    },
-    {
-      name: "Elite Pack (30-Day)",
-      dailyPnl: "2.0%/day",
-      portfolioRange: "$25,001+",
-      duration: "30 days",
-      capitalReturned: true,
-      aiImage: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=400&h=300&fit=crop&crop=center",
-      gradient: "from-yellow-500 to-orange-500",
-      description: "Elite AI trading for high-value investors",
-      features: ["Elite Algorithms", "VIP Support", "Highest Returns"],
-      totalReturn: "400% total",
-      profitLimit: "4x limit",
+      gradient: "from-red-600 to-orange-600",
+      description: "High-performance arbitrage with rapid multi-exchange execution",
+      features: ["Weekly 3-5% Target", "Rapid Execution", "Multi-Exchange", "High-Yield Model"],
+      totalReturn: "200-240% annualized",
+      profitLimit: "Profits-only structure",
       isElite: true,
-      subscriptionFee: "$25",
-      walletInfo: "USDT (BEP20) Binance"
-    },
-    {
-      name: "Elite Pack (365-Day)",
-      dailyPnl: "2.25%/day",
-      portfolioRange: "$25,001+",
-      duration: "365 days",
-      capitalReturned: true,
-      aiImage: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400&h=300&fit=crop&crop=center",
-      gradient: "from-yellow-600 to-red-500",
-      description: "Ultimate AI trading experience with maximum profitability",
-      features: ["Ultimate ROI", "White-glove Service", "Elite Features"],
-      totalReturn: "400% total",
-      profitLimit: "4x limit",
-      isElite: true,
-      subscriptionFee: "$25",
-      walletInfo: "USDT (BEP20) Binance"
+      subscriptionFee: null,
+      walletInfo: "Advanced Strategy"
     }
   ];
 
@@ -103,12 +64,12 @@ const TradingPortfoliosSection = () => {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-gray-900">
-            AI-Arbitrage Trading Plans
+          <h2 className="text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-yellow-600 to-amber-600 bg-clip-text text-transparent">
+            InvestoGold Investment Plans
           </h2>
           <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-            Choose from our smart AI arbitrage trading portfolios designed to generate consistent passive income 
-            through automated bot operations. Start with our annual subscription and select your investment tier.
+            Choose from our intelligent gold & commodity investment solutions. Combining physical assets with AI-powered trading strategies, 
+            backed by 10+ years of expertise in Dubai's precious metals market.
           </p>
         </motion.div>
 

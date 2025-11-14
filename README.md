@@ -1,6 +1,6 @@
-# investogold Full-Stack Application
+# InvestoGold Full-Stack Application
 
-A comprehensive Next.js + Node.js application for a cryptocurrency trading platform with referral-based subscription system, using MySQL database with Sequelize ORM.
+A comprehensive Next.js + Node.js application for InvestoGold - a Dubai-based bullion and commodities investment platform combining physical gold assets with AI-powered trading systems, using MySQL database with Sequelize ORM.
 
 ## 🚀 Architecture
 
@@ -14,16 +14,16 @@ This is a **unified full-stack application** that combines:
 ## Features
 
 - **User Authentication**: Registration, login, JWT tokens, password reset with OTP
-- **Referral System**: 15-level multi-level marketing structure with commission distribution
-- **Portfolio Management**: Investment plans with different tiers (Basic, Premium, Elite)
+- **Referral Program**: 10% flat commission structure with performance-based earnings
+- **Investment Plans**: 3 core offerings (AI-Driven Trade, Gold Vault, Weekly Arbitrage)
 - **Deposit System**: Manual deposit approval with file upload for payment proofs
 - **Withdrawal System**: Admin-approved withdrawal requests with multiple payment methods
 - **Rank Management**: Automatic rank assignment based on deposits and referrals
 - **Admin Dashboard**: Complete admin panel for managing users, deposits, withdrawals
-- **Bot Management**: Automated trading bot activation and earnings simulation
+- **Portfolio Management**: AI-powered trading and physical gold asset tracking
 - **Transaction History**: Comprehensive transaction logging and reporting
 - **Security**: Rate limiting, input validation, secure headers, logging
-- **Real-time Price Data**: Live cryptocurrency prices with caching and rate limiting
+- **Real-time Data**: Live gold prices and market performance tracking
 
 ## 🚀 CI/CD Deployment
 

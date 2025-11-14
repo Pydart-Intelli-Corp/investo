@@ -127,11 +127,11 @@ const DashboardPlans: React.FC<DashboardPlansProps> = ({ onClose, showHeader = t
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-amber-50 to-yellow-100 flex items-center justify-center">
         <div className="flex flex-col items-center space-y-4">
-          <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
-          <p className="text-gray-600 text-lg font-medium">Loading AI-Arbitrage Plans...</p>
-          <p className="text-gray-500 text-sm">Analyzing market opportunities across 50+ exchanges</p>
+          <Loader2 className="h-12 w-12 animate-spin text-yellow-600" />
+          <p className="text-gray-600 text-lg font-medium">Loading InvestoGold Plans...</p>
+          <p className="text-gray-500 text-sm">Analyzing gold & commodity market opportunities</p>
         </div>
       </div>
     );
@@ -167,7 +167,7 @@ const DashboardPlans: React.FC<DashboardPlansProps> = ({ onClose, showHeader = t
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-amber-50 to-yellow-100 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header - Only show when showHeader is true or undefined (default) */}
         {(showHeader === true || showHeader === undefined) && (
@@ -178,25 +178,24 @@ const DashboardPlans: React.FC<DashboardPlansProps> = ({ onClose, showHeader = t
           >
             <div className="flex items-center justify-between mb-8">
               <div className="flex-1">
-                <h1 className="text-4xl lg:text-5xl font-bold mb-4 text-gray-900">
-                  AI-Powered Arbitrage Trading Plans
+                <h1 className="text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-yellow-600 to-amber-600 bg-clip-text text-transparent">
+                  InvestoGold — Intelligent Wealth Solutions
                 </h1>
                 <p className="text-xl text-gray-600 max-w-4xl mx-auto mb-4">
-                  Harness the power of artificial intelligence to capitalize on cryptocurrency price differences across multiple exchanges. 
-                  Our advanced algorithms execute thousands of micro-trades 24/7, generating consistent returns through market inefficiencies.
+                  Combine the stability of physical gold with AI-powered trading systems. Our Dubai-based platform offers diversified exposure to global gold and commodity markets, backed by 10+ years of expertise.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-500 max-w-3xl mx-auto">
                   <div className="flex items-center">
-                    <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-                    Real-time Market Analysis
+                    <div className="w-2 h-2 bg-yellow-500 rounded-full mr-2"></div>
+                    Physical Gold Assets
                   </div>
                   <div className="flex items-center">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
-                    Multi-Exchange Integration
+                    <div className="w-2 h-2 bg-amber-500 rounded-full mr-2"></div>
+                    AI-Driven Trading
                   </div>
                   <div className="flex items-center">
-                    <div className="w-2 h-2 bg-purple-500 rounded-full mr-2"></div>
-                    Risk-Managed Trading
+                    <div className="w-2 h-2 bg-orange-500 rounded-full mr-2"></div>
+                    Dubai-Based Security
                   </div>
                   <div className="flex items-center">
                     <div className="w-2 h-2 bg-orange-500 rounded-full mr-2"></div>

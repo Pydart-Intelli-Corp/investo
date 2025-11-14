@@ -163,7 +163,7 @@ const HeroSection = () => {
           animate="visible"
           variants={titleVariants}
         >
-          Trusted <GoldHighlight>Gold Investment</GoldHighlight> Partner
+          InvestoGold — <GoldHighlight>Intelligent Wealth Solutions</GoldHighlight>
         </Title>
         
         <Subtitle
@@ -171,7 +171,7 @@ const HeroSection = () => {
           animate="visible"
           variants={subtitleVariants}
         >
-          UAE-based investment consultancy specializing exclusively in <GoldHighlight>gold investments</GoldHighlight>. We provide Digital Gold powered by AI-driven trading for consistent monthly profits, and Physical Gold offering stable annual returns.
+          Dubai-based bullion and commodities provider with 10+ years of expertise. Combining the stability of <GoldHighlight>physical gold</GoldHighlight> with AI-powered trading systems for diversified exposure to global metals markets.
         </Subtitle>
         
         <ButtonContainer>

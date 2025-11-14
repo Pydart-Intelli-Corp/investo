@@ -35,7 +35,8 @@
     "db:create": "sequelize-cli db:create",
     "db:drop": "sequelize-cli db:drop",
     "clean": "powershell -ExecutionPolicy Bypass -File scripts/cleanup.ps1",
-    "clean:full": "powershell -ExecutionPolicy Bypass -File scripts/cleanup.ps1 --full"
+    "clean:full": "powershell -ExecutionPolicy Bypass -File scripts/cleanup.ps1 --full",
+    "update-plans": "node scripts/update-investogold-plans.js"
   },
   "keywords": [
     "cryptocurrency",

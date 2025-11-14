@@ -4,27 +4,27 @@ const FeaturesSection = () => {
   const features = [
     {
       icon: <TrendingUp className="w-12 h-12 text-white" />,
-      title: "AI-Powered Arbitrage",
-      description: "Continuously scans multiple exchanges to detect price differences for digital assets like BTC, USDT, and gold-backed tokens.",
-      gradient: "from-green-500 to-emerald-600",
-      borderColor: "border-green-200 hover:border-green-400",
-      bgGradient: "from-green-400 to-blue-500"
+      title: "AI-Driven Trading",
+      description: "Automated arbitrage and market-intelligence strategies across gold and commodity markets. Monthly performance targets of 7-10% through disciplined execution.",
+      gradient: "from-yellow-500 to-amber-600",
+      borderColor: "border-yellow-200 hover:border-yellow-400",
+      bgGradient: "from-yellow-400 to-amber-500"
     },
     {
       icon: <Shield className="w-12 h-12 text-white" />,
-      title: "Instant Execution",
-      description: "Executes simultaneous buy-sell orders whenever a price gap is detected — locking in profit before markets rebalance.",
-      gradient: "from-purple-500 to-pink-600",
-      borderColor: "border-purple-200 hover:border-purple-400",
-      bgGradient: "from-purple-400 to-pink-500"
+      title: "Physical Gold Assets",
+      description: "Secure investment in physical gold stored in accredited UAE vaults. Fully insured with transparent ownership and 12-15% annual premium plus price appreciation.",
+      gradient: "from-amber-500 to-yellow-600",
+      borderColor: "border-amber-200 hover:border-amber-400",
+      bgGradient: "from-amber-400 to-yellow-500"
     },
     {
       icon: <Zap className="w-12 h-12 text-white" />,
-      title: "Automated Growth",
-      description: "Returns are credited directly to your trading account with profits compounding daily for maximum growth potential.",
-      gradient: "from-blue-500 to-indigo-600",
-      borderColor: "border-blue-200 hover:border-blue-400",
-      bgGradient: "from-blue-400 to-indigo-500"
+      title: "High-Performance Strategy",
+      description: "Weekly arbitrage program with rapid multi-exchange execution. Target 3-5% weekly returns through professionally monitored active trading strategies.",
+      gradient: "from-orange-500 to-red-600",
+      borderColor: "border-orange-200 hover:border-orange-400",
+      bgGradient: "from-orange-400 to-red-500"
     }
   ];
 
@@ -32,12 +32,12 @@ const FeaturesSection = () => {
     <section className="bg-gray-50 py-20">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-gray-900">
-            How BTC BOT 24 Works
+          <h2 className="text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-yellow-600 to-amber-600 bg-clip-text text-transparent">
+            Why InvestoGold?
           </h2>
           <p className="text-gray-700 text-lg max-w-3xl mx-auto">
-            Our next-generation AI Arbitrage Trading Platform enables investors to earn consistent 
-            passive income through automated trading bots and real-time market analysis.
+            Smart technology-driven approach to wealth creation through gold and commodities — supported by real assets, 
+            professional market management, and regulated operations in Dubai, UAE.
           </p>
         </div>
         

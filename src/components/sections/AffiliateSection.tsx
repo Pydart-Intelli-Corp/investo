@@ -7,39 +7,39 @@ const AffiliateSection = () => {
   const affiliateFeatures = [
     {
       icon: <DollarSign className="w-8 h-8" />,
-      title: "Direct Referral Bonus",
-      description: "5% commission on every direct referral investment",
-      gradient: "from-green-500 to-emerald-500",
-      highlight: "5%"
+      title: "Monthly Portfolio Referrals",
+      description: "10% incentive on AI-Driven Trade Portfolio investments",
+      gradient: "from-yellow-500 to-amber-500",
+      highlight: "10%"
     },
     {
       icon: <Network className="w-8 h-8" />,
-      title: "Team Level Bonuses",
-      description: "Earn from 15 levels deep with dynamic structure",
-      gradient: "from-blue-500 to-indigo-500",
-      highlight: "15 Levels"
+      title: "Profit on Referral Incentives",
+      description: "Additional 10% profit on your referral incentives",
+      gradient: "from-amber-500 to-orange-500",
+      highlight: "10% Profit"
     },
     {
       icon: <TrendingUp className="w-8 h-8" />,
-      title: "Recurring Income",
-      description: "Commission on renewals and reinvestments",
-      gradient: "from-purple-500 to-pink-500",
-      highlight: "Recurring"
+      title: "Weekly Arbitrage Referrals",
+      description: "10% incentive on high-performance strategy investments",
+      gradient: "from-red-500 to-orange-500",
+      highlight: "10%"
     },
     {
       icon: <Crown className="w-8 h-8" />,
-      title: "Community Builder",
-      description: "Turn your network into passive income stream",
-      gradient: "from-yellow-500 to-orange-500",
-      highlight: "Passive"
+      title: "Performance-Based Earnings",
+      description: "Referral earnings based on realized trade performance",
+      gradient: "from-yellow-600 to-amber-600",
+      highlight: "Performance"
     }
   ];
 
   const levelStructure = [
-    { level: "Level 1", percentage: "5%", description: "Direct Referrals" },
-    { level: "Level 2-5", percentage: "2%", description: "Secondary Network" },
-    { level: "Level 6-10", percentage: "1%", description: "Extended Network" },
-    { level: "Level 11-15", percentage: "0.5%", description: "Deep Network" }
+    { level: "Monthly Portfolio", percentage: "10%", description: "AI-Driven Trade Portfolio" },
+    { level: "Referral Profit", percentage: "10%", description: "Your Referral Incentives" },
+    { level: "Weekly Arbitrage", percentage: "10%", description: "High-Performance Strategy" },
+    { level: "All Plans", percentage: "10%", description: "Consistent Commission Rate" }
   ];
 
   return (
@@ -54,13 +54,13 @@ const AffiliateSection = () => {
           viewport={{ once: true }}
         >
           <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-gray-900">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600">
-              Affiliate Program
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-600 via-amber-600 to-orange-600">
+              Referral Partnership Program
             </span>
           </h2>
           <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-            BTC BOT 24 rewards community builders through a multi-level affiliate income system. 
-            Build your network and earn passive income from every referral investment and renewal.
+            InvestoGold rewards clients who help our network grow. Earn 10% incentives on all referral investments, 
+            plus an additional 10% profit on your referral incentives. Performance-based earnings tied to realized trade results.
           </p>
         </motion.div>
 
