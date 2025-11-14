@@ -126,13 +126,39 @@ async function updateInvestoGoldPlans() {
 
     console.log('👤 Admin user found:', adminUser.email, '\n');
 
-    // Delete existing portfolios to avoid slug conflicts
-    console.log('📦 Deleting old portfolios...');
-    await Portfolio.destroy({
-      where: {},
-      force: true
+    // Delete existing portfolios and update existing plans with unique slugs
+    console.log('📦 Handling old portfolios...');
+    
+    // First, check if any of our new slugs exist
+    const existingSlugs = ['ai-driven-trading', 'gold-vault-investment', 'weekly-arbitrage-strategy'];
+    const existingPlans = await Portfolio.findAll({
+      where: {
+        slug: existingSlugs
+      }
     });
-    console.log('✅ Old portfolios deleted\n');
+
+    if (existingPlans.length > 0) {
+      console.log(`Found ${existingPlans.length} existing plans with conflicting slugs`);
+      
+      // Update the slugs of existing plans to avoid conflicts
+      for (const plan of existingPlans) {
+        await plan.update({
+          slug: `${plan.slug}-old-${Date.now()}`,
+          isActive: false,
+          isVisible: false
+        });
+      }
+      console.log('✅ Deactivated conflicting plans with renamed slugs');
+    } else {
+      console.log('No conflicting slugs found');
+    }
+
+    // Deactivate all other portfolios
+    await Portfolio.update(
+      { isActive: false, isVisible: false },
+      { where: {} }
+    );
+    console.log('✅ All old portfolios deactivated\n');
 
     // Create new InvestoGold plans
     console.log('🆕 Creating new InvestoGold plans...\n');
