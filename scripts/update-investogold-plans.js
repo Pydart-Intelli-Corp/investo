@@ -9,16 +9,16 @@ const { Portfolio, User } = require('../models');
 
 const newInvestoGoldPlans = [
   {
-    name: 'AI-Driven Trade Portfolio',
-    slug: 'ai-driven-trade-monthly',
-    description: 'Diversified gold and commodity trades using automated arbitrage and market-intelligence strategies with monthly performance targets.',
+    name: 'AI-Driven Trading',
+    slug: 'ai-driven-trading',
+    description: '7-10% monthly returns with principal eligible for return at maturity',
     price: 1000.00,
     minInvestment: 1000.00,
-    maxInvestment: 100000.00,
+    maxInvestment: 1000000.00,
     durationValue: 24,
     durationUnit: 'months',
     dailyROI: 0.30, // ~7-10% monthly = ~0.3% daily
-    totalReturnLimit: 120.0, // 100-120% annualized over 24 months
+    totalReturnLimit: 240.0, // 7-10% monthly over 24 months
     type: 'Premium',
     category: 'Custom',
     displayOrder: 1,
@@ -26,17 +26,14 @@ const newInvestoGoldPlans = [
     requiresSubscription: false,
     isElite: false,
     features: [
-      { name: 'AI-Powered Trading', description: 'Advanced algorithms for gold & commodity arbitrage', included: true },
-      { name: 'Monthly Performance', description: 'Target 7-10% monthly returns', included: true },
-      { name: 'Diversified Exposure', description: 'Global metals market coverage', included: true },
-      { name: 'Principal Return Eligible', description: 'Principal returned at maturity', included: true },
-      { name: '24-Month Term', description: 'Fixed investment period for optimal growth', included: true },
-      { name: 'Professional Management', description: 'Expert oversight of all trades', included: true }
+      { name: '7-10% Monthly Returns', description: 'Consistent monthly performance', included: true },
+      { name: '24 Months Investment Period', description: 'Fixed term investment', included: true },
+      { name: 'Principal Return at Maturity', description: 'Get your capital back', included: true }
     ],
     botSettings: {
       autoActivation: true,
       activationDelay: 24,
-      tradingPairs: ['XAU/USD', 'XAG/USD', 'GOLD/USDT', 'Commodities'],
+      tradingPairs: ['XAU/USD', 'GOLD/USDT'],
       riskLevel: 'Medium'
     },
     gradientColorFrom: '#f59e0b',
@@ -46,29 +43,26 @@ const newInvestoGoldPlans = [
   },
   {
     name: 'Gold Vault Investment',
-    slug: 'gold-vault-physical-asset',
-    description: 'Secure investment in physical gold stored with accredited vault partners in the UAE. Fully insured with transparent asset ownership.',
-    price: 5000.00,
-    minInvestment: 5000.00,
-    maxInvestment: 500000.00,
+    slug: 'gold-vault-investment',
+    description: '12-15% annual returns, fully insured and securely stored',
+    price: 1000.00,
+    minInvestment: 1000.00,
+    maxInvestment: 1000000.00,
     durationValue: 12,
     durationUnit: 'months',
     dailyROI: 0.04, // ~12-15% annual = ~0.04% daily
-    totalReturnLimit: 15.0, // 12-15% annual premium
-    type: 'Elite',
+    totalReturnLimit: 15.0, // 12-15% annual
+    type: 'Premium',
     category: 'Custom',
     displayOrder: 2,
     subscriptionFee: 0.00,
     requiresSubscription: false,
-    isElite: true,
+    isElite: false,
     features: [
-      { name: 'Physical Gold Ownership', description: 'Real tangible assets in UAE vaults', included: true },
-      { name: 'Insurance-Backed', description: 'Fully insured storage and protection', included: true },
-      { name: 'Annual Premium 12-15%', description: 'Attractive annual yield on physical gold', included: true },
-      { name: 'Monthly Yield', description: 'Regular income distribution', included: true },
-      { name: 'Gold Price Appreciation', description: 'Benefit from gold market gains', included: true },
-      { name: 'Secure Storage', description: 'Accredited vault partners in Dubai', included: true },
-      { name: 'Transparent Ownership', description: 'Full documentation and proof of ownership', included: true }
+      { name: '12-15% Annual Returns', description: 'Stable yearly returns', included: true },
+      { name: '1 Year Investment Period', description: 'Annual investment term', included: true },
+      { name: 'Fully Insured', description: 'Protected investment', included: true },
+      { name: 'Securely Stored', description: 'Safe storage facility', included: true }
     ],
     botSettings: {
       autoActivation: true,
@@ -83,15 +77,15 @@ const newInvestoGoldPlans = [
   },
   {
     name: 'Weekly Arbitrage Strategy',
-    slug: 'weekly-arbitrage-high-performance',
-    description: 'High-performance arbitrage program with rapid execution across multiple exchanges. Engineered for investors seeking maximum yield.',
-    price: 10000.00,
-    minInvestment: 10000.00,
+    slug: 'weekly-arbitrage-strategy',
+    description: '3-5% weekly returns, principal not returned',
+    price: 1000.00,
+    minInvestment: 1000.00,
     maxInvestment: 1000000.00,
     durationValue: 24,
     durationUnit: 'months',
     dailyROI: 0.60, // ~3-5% weekly = ~0.6% daily
-    totalReturnLimit: 240.0, // 200-240% annualized
+    totalReturnLimit: 240.0, // High yield profits-only model
     type: 'Elite',
     category: 'Custom',
     displayOrder: 3,
@@ -99,18 +93,14 @@ const newInvestoGoldPlans = [
     requiresSubscription: false,
     isElite: true,
     features: [
-      { name: 'Weekly Performance', description: 'Target 3-5% weekly returns', included: true },
-      { name: 'Rapid Execution', description: 'Professional monitoring and fast trade execution', included: true },
-      { name: 'Multi-Exchange Coverage', description: 'Arbitrage across major global exchanges', included: true },
-      { name: 'High-Yield Model', description: 'Annualized target 200-240%', included: true },
-      { name: 'Profits-Only Structure', description: 'Principal not returned - maximize yield', included: true },
-      { name: '24-Month Term', description: 'Extended period for compounding growth', included: true },
-      { name: 'Active Strategy', description: 'For experienced investors with higher risk appetite', included: true }
+      { name: '3-5% Weekly Returns', description: 'High performance weekly gains', included: true },
+      { name: '24 Months Investment Period', description: 'Extended investment term', included: true },
+      { name: 'Principal Not Returned', description: 'Profits-only model', included: true }
     ],
     botSettings: {
       autoActivation: true,
       activationDelay: 24,
-      tradingPairs: ['XAU/USD', 'XAG/USD', 'GOLD/USDT', 'Multi-Exchange'],
+      tradingPairs: ['XAU/USD', 'GOLD/USDT'],
       riskLevel: 'High'
     },
     gradientColorFrom: '#dc2626',
