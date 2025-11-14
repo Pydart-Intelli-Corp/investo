@@ -307,124 +307,47 @@ const DashboardPlans: React.FC<DashboardPlansProps> = ({ onClose, showHeader = t
                     <p className="text-gray-600 text-sm">{portfolio.description}</p>
                   </div>
 
-                  {/* Performance Metrics */}
-                  <div className="grid grid-cols-2 gap-3 mb-4">
-                    <div className="bg-gradient-to-br from-green-100 to-emerald-100 rounded-lg p-3 text-center border border-green-200">
+                  {/* Essential Plan Information */}
+                  <div className="space-y-3 mb-4">
+                    {/* Minimum Capital */}
+                    <div className="bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg p-3 border border-purple-200">
+                      <div className="flex items-center justify-center mb-1">
+                        <DollarSign className="w-4 h-4 text-purple-600 mr-1" />
+                        <span className="text-xs text-purple-700 font-medium">Minimum Capital Needed</span>
+                      </div>
+                      <div className="font-bold text-purple-700 text-lg text-center">${portfolio.minInvestment.toLocaleString()} USD</div>
+                    </div>
+
+                    {/* Returns Info */}
+                    <div className="bg-gradient-to-br from-green-100 to-emerald-100 rounded-lg p-3 border border-green-200">
                       <div className="flex items-center justify-center mb-1">
                         <TrendingUp className="w-4 h-4 text-green-600 mr-1" />
-                        <span className="text-xs text-green-700 font-medium">Daily Returns</span>
+                        <span className="text-xs text-green-700 font-medium">Returns</span>
                       </div>
-                      <div className="font-bold text-green-700">{portfolio.dailyPnl}</div>
-                      <div className="text-xs text-green-600 mt-1">From Arbitrage</div>
+                      <div className="font-bold text-green-700 text-center">{portfolio.description}</div>
                     </div>
-                    <div className="bg-gradient-to-br from-blue-100 to-indigo-100 rounded-lg p-3 text-center border border-blue-200">
+
+                    {/* Period of Investment */}
+                    <div className="bg-gradient-to-br from-blue-100 to-indigo-100 rounded-lg p-3 border border-blue-200">
                       <div className="flex items-center justify-center mb-1">
                         <Clock className="w-4 h-4 text-blue-600 mr-1" />
-                        <span className="text-xs text-blue-700 font-medium">Contract</span>
+                        <span className="text-xs text-blue-700 font-medium">Period of Investment</span>
                       </div>
-                      <div className="font-bold text-blue-700 text-sm">{portfolio.duration}</div>
-                      <div className="text-xs text-blue-600 mt-1">AI Trading</div>
+                      <div className="font-bold text-blue-700 text-center">{portfolio.duration}</div>
                     </div>
                   </div>
 
-                  {/* AI Stats */}
-                  <div className="grid grid-cols-3 gap-2 mb-4">
-                    <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-lg p-2 text-center border border-orange-200">
-                      <div className="text-xs text-orange-700 font-medium">Exchanges</div>
-                      <div className="font-bold text-orange-800 text-sm">50+</div>
-                    </div>
-                    <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-lg p-2 text-center border border-purple-200">
-                      <div className="text-xs text-purple-700 font-medium">Speed</div>
-                      <div className="font-bold text-purple-800 text-sm">50ms</div>
-                    </div>
-                    <div className="bg-gradient-to-br from-cyan-50 to-teal-50 rounded-lg p-2 text-center border border-cyan-200">
-                      <div className="text-xs text-cyan-700 font-medium">Uptime</div>
-                      <div className="font-bold text-cyan-800 text-sm">99.9%</div>
-                    </div>
-                  </div>
-
-                  {/* Investment Range */}
-                  <div className="bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg p-3 text-center border border-purple-200 mb-4">
-                    <div className="flex items-center justify-center mb-1">
-                      <DollarSign className="w-4 h-4 text-purple-600 mr-1" />
-                      <span className="text-xs text-purple-700 font-medium">Capital Allocation</span>
-                    </div>
-                    <div className="font-bold text-purple-700 text-sm">{portfolio.portfolioRange}</div>
-                    <div className="text-xs text-purple-600 mt-1">AI Managed Portfolio</div>
-                  </div>
-
-                  {/* Bot Subscription & Wallet Info - Available on All Plans */}
-                  <div className="mb-4 space-y-3">
-                    {/* Subscription Fee */}
-                    <div className="bg-gradient-to-r from-amber-50 via-yellow-50 to-orange-50 border border-amber-200 rounded-lg p-3">
-                      <div className="flex items-center space-x-2">
-                        {portfolio.isElite ? (
-                          <Crown className="w-4 h-4 text-amber-600" />
-                        ) : (
-                          <Zap className="w-4 h-4 text-amber-600" />
-                        )}
-                        <div>
-                          <h4 className="text-amber-900 font-bold text-xs">Yearly Bot Subscription</h4>
-                          <p className="text-amber-700 text-xs">One time fee: <span className="font-bold">$25</span></p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Wallet Information */}
-                    <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 border border-blue-200 rounded-lg p-3">
-                      <div className="flex items-center space-x-2">
-                        <Wallet className="w-4 h-4 text-blue-600" />
-                        <div>
-                          <h4 className="text-blue-900 font-bold text-xs">WALLET</h4>
-                          <h5 className="text-blue-800 font-medium text-xs">Receive & Withdraw</h5>
-                          <p className="text-blue-700 text-xs">USDT (BEP20) Binance</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Features */}
+                  {/* Key Features */}
                   <div className="mb-6 flex-grow">
-                    <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center">
-                      <Zap className="w-4 h-4 mr-2 text-yellow-600" />
-                      AI-Arbitrage Features
-                    </h4>
                     <div className="space-y-2">
-                      {portfolio.features.map((feature, featureIndex) => (
-                        <div key={featureIndex} className="flex items-start text-sm text-gray-700 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-3 border border-blue-100">
+                      {portfolio.features.slice(0, 3).map((feature, featureIndex) => (
+                        <div key={featureIndex} className="flex items-start text-sm text-gray-700 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-2 border border-blue-100">
                           <CheckCircle className="w-4 h-4 text-blue-500 mr-2 flex-shrink-0 mt-0.5" />
-                          <div>
-                            <span className="font-medium text-gray-900">
-                              {typeof feature === 'string' ? feature : (feature as FeatureObject).name}
-                            </span>
-                            {typeof feature === 'object' && (feature as FeatureObject).description && (
-                              <p className="text-xs text-gray-600 mt-1">
-                                {(feature as FeatureObject).description}
-                              </p>
-                            )}
-                          </div>
+                          <span className="font-medium text-gray-900">
+                            {typeof feature === 'string' ? feature : (feature as FeatureObject).name}
+                          </span>
                         </div>
                       ))}
-                    </div>
-                  </div>
-
-                  {/* Portfolio Stats */}
-                  <div className="mb-4 grid grid-cols-2 gap-3 text-xs">
-                    <div className="text-center">
-                      <div className="text-gray-500">Active Users</div>
-                      <div className="font-bold text-gray-700">{portfolio.activeSubscribers}</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-gray-500">Profit Limit</div>
-                      <div className="font-bold text-gray-700">{portfolio.profitLimit}</div>
-                    </div>
-                  </div>
-
-                  {/* Capital Return Badge */}
-                  <div className="mb-4">
-                    <div className="inline-flex items-center bg-gradient-to-r from-green-500 to-emerald-500 text-white px-3 py-1 rounded-full text-sm font-bold">
-                      <CheckCircle className="w-4 h-4 mr-2" />
-                      Capital Returned
                     </div>
                   </div>
 
