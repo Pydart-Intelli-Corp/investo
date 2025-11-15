@@ -188,7 +188,7 @@ const startServer = async () => {
 
 
     // Serve static files (uploaded files)
-    app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+    app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
     // Request logging middleware for API routes only
     app.use('/api', (req, res, next) => {
