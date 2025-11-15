@@ -396,14 +396,31 @@ const getAvailablePortfolios = asyncHandler(async (req, res) => {
     // Add calculated fields for each portfolio
     const enrichedPortfolios = portfolios.map(portfolio => {
       const portfolioData = portfolio.toJSON();
+      
+      // Create gradient class from database colors
+      const gradient = portfolioData.gradientColorFrom && portfolioData.gradientColorTo
+        ? `from-[${portfolioData.gradientColorFrom}] to-[${portfolioData.gradientColorTo}]`
+        : 'from-blue-500 to-purple-500';
+
       return {
         ...portfolioData,
+        // Calculated fields from model methods
         availabilityStatus: portfolio.getAvailabilityStatus(),
         remainingSlots: portfolio.getRemainingSlots(),
         formattedPrice: portfolio.getFormattedPrice(),
         investmentRange: portfolio.getInvestmentRange(),
         durationInDays: portfolio.getDurationInDays(),
-        totalPossibleReturn: portfolio.getTotalPossibleReturn()
+        totalPossibleReturn: portfolio.getTotalPossibleReturn(),
+        
+        // Frontend-compatible fields
+        dailyPnl: `${portfolioData.dailyROI}% Daily`,
+        portfolioRange: portfolio.getInvestmentRange(),
+        duration: `${portfolioData.durationValue} ${portfolioData.durationUnit}`,
+        gradient: gradient,
+        totalReturn: `${portfolio.getTotalPossibleReturn()}%`,
+        profitLimit: `${portfolioData.totalReturnLimit}%`,
+        walletInfo: null,
+        activeSubscribers: portfolioData.activeSubscribers || 0
       };
     });
 

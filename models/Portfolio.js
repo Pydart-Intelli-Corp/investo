@@ -101,12 +101,12 @@ const Portfolio = sequelize.define('Portfolio', {
   
   // Portfolio Type and Category
   type: {
-    type: DataTypes.ENUM('Basic', 'Premium', 'Elite'),
+    type: DataTypes.STRING(50),
     allowNull: false,
     defaultValue: 'Basic'
   },
   category: {
-    type: DataTypes.ENUM('30-Day', '365-Day', 'Custom'),
+    type: DataTypes.STRING(50),
     allowNull: false
   },
   

@@ -65,6 +65,9 @@ const DashboardPlans: React.FC<DashboardPlansProps> = ({ onClose, showHeader = t
   const [showPayment, setShowPayment] = useState(false);
   const [selectedPortfolio, setSelectedPortfolio] = useState<Portfolio | null>(null);
   const [investmentAmount, setInvestmentAmount] = useState(0);
+  const [showAmountModal, setShowAmountModal] = useState(false);
+  const [tempAmount, setTempAmount] = useState<string>('');
+  const [amountError, setAmountError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchPortfolios();
@@ -92,13 +95,37 @@ const DashboardPlans: React.FC<DashboardPlansProps> = ({ onClose, showHeader = t
   };
 
   const handleSelectPlan = (portfolio: Portfolio) => {
-    // For now, use minimum investment amount
-    // In a real app, you'd have an investment amount selector
-    const defaultInvestment = portfolio.minInvestment || 100;
-    
+    console.log('🎯 Select Plan clicked:', portfolio.name);
     setSelectedPortfolio(portfolio);
-    setInvestmentAmount(defaultInvestment);
+    setTempAmount('1000'); // Default to minimum $1000
+    setAmountError(null);
+    setShowAmountModal(true);
+    console.log('✅ Modal should show now, showAmountModal:', true);
+  };
+
+  const handleConfirmAmount = () => {
+    const amount = parseFloat(tempAmount);
+    
+    if (isNaN(amount) || amount < 1000) {
+      setAmountError('Minimum investment is $1,000');
+      return;
+    }
+    
+    if (selectedPortfolio && amount > selectedPortfolio.maxInvestment) {
+      setAmountError(`Maximum investment is $${selectedPortfolio.maxInvestment.toLocaleString()}`);
+      return;
+    }
+    
+    setInvestmentAmount(amount);
+    setShowAmountModal(false);
     setShowPayment(true);
+  };
+
+  const handleCancelAmount = () => {
+    setShowAmountModal(false);
+    setSelectedPortfolio(null);
+    setTempAmount('');
+    setAmountError(null);
   };
 
   const handleBackToPlans = () => {
@@ -155,8 +182,11 @@ const DashboardPlans: React.FC<DashboardPlansProps> = ({ onClose, showHeader = t
     );
   }
 
-  // Show payment screen when a plan is selected
-  if (showPayment && selectedPortfolio) {
+  // Show payment screen when a plan is selected and amount is confirmed
+  console.log('🔍 Render check - showPayment:', showPayment, 'selectedPortfolio:', !!selectedPortfolio, 'showAmountModal:', showAmountModal);
+  
+  if (showPayment && selectedPortfolio && !showAmountModal) {
+    console.log('💳 Showing Payment Screen');
     return (
       <PaymentScreen
         portfolio={selectedPortfolio}
@@ -472,6 +502,100 @@ const DashboardPlans: React.FC<DashboardPlansProps> = ({ onClose, showHeader = t
           </div>
         </motion.div>
       </div>
+
+      {/* Investment Amount Modal */}
+      {showAmountModal && selectedPortfolio && (
+        <>
+          {console.log('🪟 Modal rendering now for:', selectedPortfolio.name)}
+          <div 
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          onClick={handleCancelAmount}
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Enter Investment Amount</h2>
+            
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 mb-6">
+              <h3 className="font-bold text-gray-900 mb-2">{selectedPortfolio.name}</h3>
+              <p className="text-sm text-gray-600">{selectedPortfolio.description}</p>
+            </div>
+
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Investment Amount (USD)
+              </label>
+              <div className="relative">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold text-lg">$</span>
+                <input
+                  type="number"
+                  min="1000"
+                  max={selectedPortfolio.maxInvestment}
+                  step="100"
+                  value={tempAmount}
+                  onChange={(e) => {
+                    setTempAmount(e.target.value);
+                    setAmountError(null);
+                  }}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      handleConfirmAmount();
+                    }
+                  }}
+                  className="w-full pl-10 pr-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-medium text-lg"
+                  placeholder="1000"
+                  autoFocus
+                />
+              </div>
+              
+              {amountError && (
+                <div className="mt-2 flex items-center text-red-600 text-sm">
+                  <AlertCircle className="w-4 h-4 mr-1" />
+                  <span>{amountError}</span>
+                </div>
+              )}
+              
+              <div className="mt-3 flex items-center justify-between text-sm text-gray-600">
+                <span>Minimum: ${selectedPortfolio.minInvestment.toLocaleString()}</span>
+                <span>Maximum: ${selectedPortfolio.maxInvestment.toLocaleString()}</span>
+              </div>
+            </div>
+
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+              <div className="flex items-start space-x-2">
+                <DollarSign className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
+                <div>
+                  <h4 className="font-medium text-amber-900 text-sm mb-1">Investment Details</h4>
+                  <ul className="text-xs text-amber-800 space-y-1">
+                    <li>• Daily ROI: {selectedPortfolio.dailyROI}%</li>
+                    <li>• Duration: {selectedPortfolio.duration}</li>
+                    <li>• Minimum: $1,000 USD</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex space-x-3">
+              <button
+                onClick={handleCancelAmount}
+                className="flex-1 px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmAmount}
+                className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-bold hover:from-blue-700 hover:to-indigo-700 transition-all transform hover:scale-105 shadow-lg"
+              >
+                Continue to Payment
+              </button>
+            </div>
+          </motion.div>
+        </div>
+        </>
+      )}
     </div>
   );
 };

@@ -54,8 +54,8 @@ interface PaymentRequest {
     name: string;
     description: string;
     type: string;
-    riskLevel: string;
-  };
+    category?: string;
+  } | null;
   adminWallet: {
     id: number;
     walletAddress: string;
@@ -409,7 +409,7 @@ export default function AdminPaymentManagement() {
       payment.id,
       `${payment.user.firstName} ${payment.user.lastName}`,
       payment.user.email,
-      payment.portfolio.name,
+      payment.portfolio?.name || 'N/A',
       payment.amount,
       payment.totalAmount,
       payment.paymentType,
@@ -737,8 +737,8 @@ export default function AdminPaymentManagement() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-white">{payment.portfolio.name}</div>
-                      <div className="text-xs text-gray-400">{payment.portfolio.type}</div>
+                      <div className="text-sm text-white">{payment.portfolio?.name || 'N/A'}</div>
+                      <div className="text-xs text-gray-400">{payment.portfolio?.type || 'Unknown'}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {getStatusBadge(payment.status)}
@@ -868,8 +868,8 @@ export default function AdminPaymentManagement() {
                 {/* Portfolio Information */}
                 <div>
                   <label className="block text-sm font-medium text-gray-300">Portfolio</label>
-                  <p className="mt-1 text-sm text-white">{selectedPayment.portfolio.name}</p>
-                  <p className="text-xs text-gray-400">{selectedPayment.portfolio.description}</p>
+                  <p className="mt-1 text-sm text-white">{selectedPayment.portfolio?.name || 'N/A'}</p>
+                  <p className="text-xs text-gray-400">{selectedPayment.portfolio?.description || 'Portfolio not available'}</p>
                 </div>
 
                 {/* Admin Wallet */}

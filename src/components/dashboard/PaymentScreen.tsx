@@ -47,7 +47,7 @@ interface PaymentScreenProps {
 
 const PaymentScreen: React.FC<PaymentScreenProps> = ({ 
   portfolio, 
-  investmentAmount, 
+  investmentAmount: initialInvestmentAmount, 
   onBack 
 }) => {
   const router = useRouter();
@@ -63,6 +63,8 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
   const [success, setSuccess] = useState(false);
   const [copied, setCopied] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [investmentAmount, setInvestmentAmount] = useState(Math.max(initialInvestmentAmount, 1000));
+  const [amountError, setAmountError] = useState<string | null>(null);
 
   const totalAmount = investmentAmount;
 
@@ -124,6 +126,28 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
     }
   };
 
+  const handleAmountChange = (value: string) => {
+    const numValue = parseFloat(value);
+    
+    if (isNaN(numValue) || value === '') {
+      setInvestmentAmount(1000);
+      setAmountError('Please enter a valid amount');
+      return;
+    }
+
+    if (numValue < 1000) {
+      setInvestmentAmount(numValue);
+      setAmountError('Minimum investment is $1,000');
+    } else if (numValue > portfolio.maxInvestment) {
+      setInvestmentAmount(numValue);
+      setAmountError(`Maximum investment is $${portfolio.maxInvestment.toLocaleString()}`);
+    } else {
+      setInvestmentAmount(numValue);
+      setAmountError(null);
+      setError(null);
+    }
+  };
+
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -167,6 +191,16 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
 
     if (!selectedWallet) {
       setError('Please select a payment wallet');
+      return;
+    }
+
+    if (investmentAmount < 1000) {
+      setError('Minimum investment is $1,000');
+      return;
+    }
+
+    if (investmentAmount > portfolio.maxInvestment) {
+      setError(`Maximum investment is $${portfolio.maxInvestment.toLocaleString()}`);
       return;
     }
 
@@ -303,6 +337,35 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
                 <div className="flex justify-between py-2">
                   <span className="text-gray-600">Investment Amount:</span>
                   <span className="font-medium">${investmentAmount.toLocaleString()}</span>
+                </div>
+                
+                {/* Editable Investment Amount */}
+                <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-200">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Edit Investment Amount
+                  </label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-medium">$</span>
+                    <input
+                      type="number"
+                      min="1000"
+                      max={portfolio.maxInvestment}
+                      step="100"
+                      value={investmentAmount}
+                      onChange={(e) => handleAmountChange(e.target.value)}
+                      className="w-full pl-8 pr-4 py-3 border-2 border-purple-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 font-medium text-lg"
+                      placeholder="1000"
+                    />
+                  </div>
+                  {amountError && (
+                    <p className="text-sm text-red-600 mt-2 flex items-center">
+                      <AlertCircle className="w-4 h-4 mr-1" />
+                      {amountError}
+                    </p>
+                  )}
+                  <p className="text-xs text-gray-600 mt-2">
+                    Range: $1,000 - ${portfolio.maxInvestment.toLocaleString()}
+                  </p>
                 </div>
                 
                 <div className="border-t pt-2">
@@ -540,9 +603,9 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
             <div className="flex justify-end">
               <button
                 onClick={handleCompletePayment}
-                disabled={!screenshot || submitting}
+                disabled={!screenshot || submitting || investmentAmount < 1000 || investmentAmount > portfolio.maxInvestment}
                 className={`px-8 py-3 rounded-lg font-bold text-white transition-all duration-300 flex items-center space-x-2 ${
-                  screenshot && !submitting
+                  screenshot && !submitting && investmentAmount >= 1000 && investmentAmount <= portfolio.maxInvestment
                     ? 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 transform hover:-translate-y-1 shadow-lg hover:shadow-xl'
                     : 'bg-gray-400 cursor-not-allowed'
                 }`}

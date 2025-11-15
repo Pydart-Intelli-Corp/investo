@@ -5,6 +5,7 @@ const { protect, adminOnly } = require('../middleware/auth');
 const responseHelper = require('../utils/responseHelper');
 const logger = require('../utils/logger');
 const { Op } = require('sequelize');
+const { distributeReferralCommissions } = require('../utils/commissionCalculator');
 
 // Get all payment requests with filtering and pagination
 router.get('/', protect, adminOnly, async (req, res) => {
@@ -60,7 +61,8 @@ router.get('/', protect, adminOnly, async (req, res) => {
         {
           model: Portfolio,
           as: 'portfolio',
-          attributes: ['id', 'name', 'description', 'type']
+          attributes: ['id', 'name', 'description', 'type'],
+          required: false
         },
         {
           model: AdminWallet,
@@ -331,6 +333,13 @@ router.post('/:paymentId/approve', protect, adminOnly, async (req, res) => {
       walletBalance: newBalance
     });
 
+    // Distribute referral commissions up to 5 levels
+    const commissionResult = await distributeReferralCommissions(
+      payment.userId,
+      parseFloat(payment.amount),
+      `${payment.portfolio.name} investment`
+    );
+
     logger.info('Payment approved by admin', {
       paymentId: payment.id,
       userId: payment.userId,
@@ -338,7 +347,9 @@ router.post('/:paymentId/approve', protect, adminOnly, async (req, res) => {
       amount: payment.amount,
       previousBalance: user.walletBalance,
       newBalance,
-      portfolio: payment.portfolio.name
+      portfolio: payment.portfolio.name,
+      commissionsDistributed: commissionResult.success ? commissionResult.totalCommissionsDistributed : 0,
+      commissionsLevels: commissionResult.success ? commissionResult.totalLevels : 0
     });
 
     // TODO: Send notification to user about payment approval
@@ -348,6 +359,8 @@ router.post('/:paymentId/approve', protect, adminOnly, async (req, res) => {
       paymentId: payment.id,
       status: 'COMPLETED',
       userBalance: newBalance,
+      commissionsDistributed: commissionResult.success ? commissionResult.totalCommissionsDistributed : 0,
+      commissionsLevels: commissionResult.success ? commissionResult.totalLevels : 0,
       message: 'Payment has been approved and user balance updated'
     });
 
