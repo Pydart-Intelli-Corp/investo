@@ -678,7 +678,7 @@ const Dashboard: React.FC = () => {
               <h3 className="text-lg font-bold text-white mb-4">Quick Actions</h3>
               <div className="space-y-3">
                 <button 
-                  onClick={() => router.push('/deposit')}
+                  onClick={() => router.push('/plans')}
                   className="w-full bg-gradient-to-r from-yellow-600 to-yellow-700 text-white px-4 py-3 rounded-lg hover:from-yellow-700 hover:to-yellow-800 transition-all transform hover:scale-105 flex items-center justify-center space-x-2 font-medium"
                 >
                   <Plus className="h-4 w-4" />
