@@ -2,10 +2,10 @@ const mysql = require('mysql2/promise');
 require('dotenv').config();
 
 const DB_CONFIG = {
-  host: process.env.DB_HOST || '72.61.144.187',
+  host: process.env.DB_HOST || 'localhost',
   port: process.env.DB_PORT || 3306,
-  user: process.env.DB_USER || 'btc_remote',
-  password: process.env.DB_PASSWORD || 'Asd@btc123456',
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || 'Access@404',
 };
 
 const DB_NAME = process.env.DB_NAME || 'investogold_db';

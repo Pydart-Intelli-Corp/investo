@@ -9,7 +9,7 @@ async function createDatabase() {
     
     // Connect to MySQL server without specifying database
     connection = await mysql.createConnection({
-      host: '127.0.0.1',
+      host: 'localhost',
       user: 'root',
       password: 'Access@404',
       port: 3306
@@ -18,24 +18,24 @@ async function createDatabase() {
     console.log('✓ Connected to MySQL server');
     
     // Create database if it doesn't exist
-    console.log('Creating database "btcbot-test"...');
-    await connection.query('CREATE DATABASE IF NOT EXISTS `btcbot-test` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci');
-    console.log('✓ Database "btcbot-test" created successfully');
+    console.log('Creating database "investogold_db"...');
+    await connection.query('CREATE DATABASE IF NOT EXISTS `investogold_db` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci');
+    console.log('✓ Database "investogold_db" created successfully');
     
-    // Switch to the btcbot-test database
-    await connection.query('USE `btcbot-test`');
+    // Switch to the investogold_db database
+    await connection.query('USE `investogold_db`');
     
     // Check if the users table exists and has data
       const [tableExists] = await connection.query(`
       SELECT COUNT(*) as count 
       FROM information_schema.tables 
-      WHERE table_schema = 'btcbot-test' AND table_name = 'users'
+      WHERE table_schema = 'investogold_db' AND table_name = 'users'
     `);    if (tableExists[0].count > 0) {
       // Check if admin user already exists
       const [adminExists] = await connection.query(`
         SELECT COUNT(*) as count 
         FROM users 
-        WHERE email = 'admin@btcbot.com' AND role = 'admin'
+        WHERE email = 'admin@investogold.com' AND role = 'admin'
       `);
       
       if (adminExists[0].count === 0) {
@@ -55,7 +55,7 @@ async function createDatabase() {
             is_active, is_email_verified, referral_code, created_at, updated_at
           ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
         `, [
-          'admin@btcbot.com',
+          'admin@investogold.com',
           hashedPassword,
           'Admin',
           'User',
@@ -67,7 +67,7 @@ async function createDatabase() {
         ]);
         
         console.log('✓ Default admin user created successfully');
-        console.log('  Email: admin@btcbot.com');
+        console.log('  Email: admin@investogold.com');
         console.log('  Password: admin123');
         console.log('  Role: admin');
       } else {
