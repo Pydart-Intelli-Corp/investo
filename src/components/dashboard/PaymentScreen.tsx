@@ -475,9 +475,11 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
                   <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg p-4 border border-green-200">
                     <h3 className="font-bold text-green-900 mb-2">Wallet Address</h3>
                     <div className="flex items-center space-x-2">
-                      <code className="bg-white px-3 py-2 rounded border text-sm flex-1 break-all text-black font-mono">
-                        {selectedWallet.walletAddress}
-                      </code>
+                      <div className="bg-white px-3 py-2 rounded border border-gray-300 flex-1">
+                        <code className="text-sm break-all font-mono font-semibold block" style={{ color: '#000000', WebkitTextFillColor: '#000000' }}>
+                          {selectedWallet.walletAddress}
+                        </code>
+                      </div>
                       <button
                         onClick={handleCopyAddress}
                         className={`px-3 py-2 rounded transition-colors ${

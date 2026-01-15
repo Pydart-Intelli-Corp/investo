@@ -275,10 +275,27 @@ a[class*="bg-pink"] {
   color: #ffffff !important;
 }
 
+/* Exception: code elements should always have black text */
+code,
+code.bg-white,
+.bg-white code,
+code[class*="px-"],
+code[class*="py-"] {
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
+}
+
 /* Ensure border buttons with backgrounds have white text */
 .border-2[class*="bg-"],
 .border[class*="bg-"] {
   color: #ffffff !important;
+}
+
+/* Override for code elements even with border classes */
+code.border,
+code[class*="border-"] {
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
 }
 
 /* Section transition effects */
